@@ -5,8 +5,22 @@ import { useState } from 'react';
 
 function App() {
   const [data, setData] = useState(quotes);
-  const htmlData = data 
-  .map((eachQuote) => (<ul className="quotes_list"></ul>{eachQuote}))
+  const [search, setSearch] = useState("");
+  const renderList = () =>{
+    return  data 
+    .filter((eachQuote)=> {
+      return eachQuote.quote.toLocalLowerCase().includes(search.toLocalLowerCase());
+    })
+    
+    .map((eachQuote) => (<ul className="quotes_list"></ul>{eachQuote}));
+  };
+
+  const handleFilter = (ev)=>{
+    setSearch(ev.target.value);
+  }
+
+
+ 
 
   
 
@@ -32,7 +46,8 @@ return (
                   <input
                     type="text"
                     id="filteredQuote"
-                    
+                    onInput= {handleFilter}
+                    value={search}
                   ></input>
               </label>
           </form>
@@ -55,9 +70,9 @@ return (
             </label>
           </form>
         </section>
-        <section>{htmlData}
-          <ul className="quotes_list">
-            {eachQuote}
+        <section>
+          <ul className="quotes_list">{renderList()}
+           {/* {eachQuote}*/}
           </ul>
         </section>
         <section>
